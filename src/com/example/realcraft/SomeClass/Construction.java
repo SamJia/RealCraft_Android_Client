@@ -11,6 +11,10 @@ import org.json.JSONObject;
 
 
 public class Construction extends Item{
+
+    public static final int CONSTRUCTION_DONE = 1;
+    public static final int CONSTRUCTION_DESTORY = 2;
+
 	int hp;
 	int maxHp = 10;
 	public int ownerId;
@@ -35,7 +39,7 @@ public class Construction extends Item{
 		return 2;
 	}
 
-	public void updateInfoFromServer(){
+	public int updateInfoFromServer(){
 		String Id = Integer.toString(id);
         String Type = "2";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -52,6 +56,11 @@ public class Construction extends Item{
         } catch (Exception e){
             e.printStackTrace();
         }
+        if(hp == maxHp)
+        	return CONSTRUCTION_DONE;
+        else if(hp == 0)
+        	return CONSTRUCTION_DESTORY;
+        return hp;
 	}
 
 	public int build(Map playerInfo) {

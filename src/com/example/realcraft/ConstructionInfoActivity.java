@@ -34,6 +34,7 @@ public class ConstructionInfoActivity extends ActionBarActivity {
 
     private Boolean constructionUpdated = false;
     private Boolean playerUpdated = false;
+    private Boolean firstBuild = false;
 
 	private Button buttonBuild;
     private Button buttonAbandon;
@@ -75,18 +76,19 @@ public class ConstructionInfoActivity extends ActionBarActivity {
             @Override
             public void onClick(View v)
             {
-            	if(buttonAbandon.getText().toString().equals(getResources().getString(R.string.stop))){
-            		mHandler.removeCallbacks(actionAbandon);
-            		buttonAbandon.setText(R.string.abandon);
-            	}
-            	if(buttonBuild.getText().toString().equals(getResources().getString(R.string.build))){
-            		mHandler.postDelayed(actionBuild, 0);
-            		buttonBuild.setText(R.string.stop);
-            	}
-            	else{
-            		mHandler.removeCallbacks(actionBuild);
-            		buttonBuild.setText(R.string.build);
-            	}
+                // if(buttonAbandon.getText().toString().equals(getResources().getString(R.string.stop))){
+                //     mHandler.removeCallbacks(actionAbandon);
+                //     buttonAbandon.setText(R.string.abandon);
+                // }
+                if(buttonBuild.getText().toString().equals(getResources().getString(R.string.build))){
+            		firstBuild = true;
+                    mHandler.postDelayed(actionBuild, 0);
+                    buttonBuild.setText(R.string.stop);
+                }
+                else{
+                    mHandler.removeCallbacks(actionBuild);
+                    buttonBuild.setText(R.string.build);
+                }
             }
         });
         buttonAttack.setOnClickListener(new OnClickListener()
@@ -94,12 +96,12 @@ public class ConstructionInfoActivity extends ActionBarActivity {
             @Override
             public void onClick(View v)
             {
-            	if(buttonBuild.getText().toString().equals(getResources().getString(R.string.stop))){
-            		mHandler.removeCallbacks(actionBuild);
-            		buttonBuild.setText(R.string.build);
-            	}
-            	if(buttonAttack.getText().toString().equals(getResources().getString(R.string.attack))){
-            		mHandler.postDelayed(actionAttack, 0);
+                // if(buttonBuild.getText().toString().equals(getResources().getString(R.string.stop))){
+                //     mHandler.removeCallbacks(actionBuild);
+                //     buttonBuild.setText(R.string.build);
+                // }
+                if(buttonAttack.getText().toString().equals(getResources().getString(R.string.attack))){
+                    mHandler.postDelayed(actionAttack, 0);
             		buttonAttack.setText(R.string.stop);
             	}
             	else{
@@ -151,6 +153,19 @@ public class ConstructionInfoActivity extends ActionBarActivity {
                         break;
                     case CONSTRUCTION_INFO:
                         constructionUpdated = true;
+                        result = (Integer)msg.obj;
+                        if(result == Construction.CONSTRUCTION_DONE){
+                            mHandler.removeCallbacks(actionBuild);
+                            buttonBuild.setText(R.string.build);
+                        }
+                        if(result == Construction.CONSTRUCTION_DESTORY){
+                            if(!firstBuild){
+                                mHandler.removeCallbacks(actionBuild);
+                                buttonBuild.setText(R.string.build);
+                            }
+                            mHandler.removeCallbacks(actionAttack);
+                            buttonAttack.setText(R.string.attack);
+                        }
                         // Toast.makeText(getApplicationContext(), "update resoure info",
                         //       Toast.LENGTH_SHORT).show();
                         break;
@@ -186,7 +201,6 @@ public class ConstructionInfoActivity extends ActionBarActivity {
             }
         }  
     };
-
 
     Runnable actionUpdateButton=new Runnable() {
         @Override
@@ -242,6 +256,7 @@ public class ConstructionInfoActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "start attack",
                      Toast.LENGTH_SHORT).show();
             new AttackThread().start();
+            firstBuild = false;
         }
     };
 
@@ -283,7 +298,7 @@ public class ConstructionInfoActivity extends ActionBarActivity {
     Runnable actionUpdateConstructionInfo = new Runnable() {
         @Override
         public void run() {
-            mHandler.postDelayed(this, 2000);
+            mHandler.postDelayed(this, 1000);
             new UpdateConstructionInfoThread().start();
         }
     };
@@ -293,8 +308,8 @@ public class ConstructionInfoActivity extends ActionBarActivity {
         public void run() {  
             super.run();
             try{
-                construction.updateInfoFromServer();
-                mHandler.obtainMessage(CONSTRUCTION_INFO, "null").sendToTarget();
+                int result = construction.updateInfoFromServer();
+                mHandler.obtainMessage(CONSTRUCTION_INFO, result).sendToTarget();
             }catch (Exception e) {
                 e.printStackTrace();
             }  
@@ -312,7 +327,7 @@ public class ConstructionInfoActivity extends ActionBarActivity {
     Runnable actionUpdatePlayerInfo = new Runnable() {
         @Override
         public void run() {
-            mHandler.postDelayed(this, 2000);
+            mHandler.postDelayed(this, 1000);
             new UpdatePlayerInfoThread().start();
         }
     };
