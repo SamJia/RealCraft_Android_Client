@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+	android:background="@color/accent_material_light"
+    tools:context="com.example.realcraft.MainActivity" >
+
+
+    
+	<com.baidu.mapapi.map.MapView  
+	    android:id="@+id/bmapView"  
+	    android:layout_width="fill_parent"  
+	    android:layout_height="fill_parent"  
+	    android:clickable="true"
+		android:layout_alignTop="@+id/request" />
+
+	<Button
+	    android:id="@+id/request"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
+		android:layout_marginTop="92dp"
+	    android:background="@drawable/custom_loc"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true" />
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/waterView"
+		android:background="@drawable/drop_mini"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignBottom="@+id/woodView" />
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/woodView"
+		android:background="@drawable/tree_mini"
+		android:layout_marginLeft="65dp"
+		android:layout_marginStart="65dp"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/stoneView"
+		android:layout_toEndOf="@+id/stoneView" />
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/stoneView"
+		android:background="@drawable/stone_mini"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/textViewFood"
+		android:layout_toEndOf="@+id/textViewFood"
+		android:layout_alignBottom="@+id/woodView" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:text="Small Text"
+		android:id="@+id/textViewFood"
+		android:layout_alignBottom="@+id/stoneView"
+		android:layout_toRightOf="@+id/waterView"
+		android:layout_toEndOf="@+id/waterView" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:text="Small Text"
+		android:id="@+id/textViewStone"
+		android:layout_alignBottom="@+id/woodView"
+		android:layout_toRightOf="@+id/stoneView"
+		android:layout_toEndOf="@+id/stoneView" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:text="Small Text"
+		android:id="@+id/textViewWood"
+		android:layout_alignTop="@+id/textViewStone"
+		android:layout_toRightOf="@+id/woodView"
+		android:layout_toEndOf="@+id/woodView" />
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/head"
+		android:background="@drawable/tent"
+		android:layout_alignRight="@+id/bmapView"
+		android:layout_alignEnd="@+id/bmapView"
+		android:layout_toRightOf="@+id/textViewWood"
+		android:layout_toEndOf="@+id/textViewWood" />
+
+	<Button
+	    android:id="@+id/buttonHire"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBottom="@+id/bmapView"
+	    android:layout_alignParentLeft="true"
+	    android:text="@string/hire" />
+
+</RelativeLayout>
